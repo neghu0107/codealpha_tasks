@@ -132,7 +132,7 @@ swapBtn.addEventListener("click", () => {
   resultText.value = tempText;
 });
 
-/* ---------------------------
+/* ----------------------------
         ENTER SHORTCUT
 ----------------------------*/
 
