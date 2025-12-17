@@ -1,6 +1,6 @@
-const translate = require("@vitalets/google-translate-api");
+import translate from "@vitalets/google-translate-api";
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -18,7 +18,6 @@ module.exports = async (req, res) => {
       forceFrom: false
     });
 
-    // ✅ Return translated text
     return res.status(200).json({
       translatedText: result.text || ""
     });
@@ -26,9 +25,8 @@ module.exports = async (req, res) => {
   } catch (err) {
     console.error("Translation error:", err.message);
 
-    // ✅ More helpful error message
     return res.status(500).json({
       error: "Translation failed. Try again or switch languages."
     });
   }
-};
+}
