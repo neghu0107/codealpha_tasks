@@ -31,7 +31,7 @@ themeToggle.addEventListener("click", () => {
 });
 
 /* ---------------------------
-        TRANSLATION
+        TRANSLATION (MYMEMORY)
 ----------------------------*/
 
 async function translateText() {
@@ -42,32 +42,27 @@ async function translateText() {
   loader.style.display = "block";
   statusEl.textContent = "Translating...";
 
-  let fromLang = sourceLang.value;
+  let fromLang = sourceLang.value === "auto" ? "en" : sourceLang.value;
   let toLang = targetLang.value;
 
-  try {
-    const response = await fetch("https://translate.astian.org/translate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify({
-        q: text,
-        source: fromLang,
-        target: toLang,
-        format: "text"
-      })
-    });
+  const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(
+    text
+  )}&langpair=${fromLang}|${toLang}`;
 
+  try {
+    const response = await fetch(url);
     const data = await response.json();
 
-    resultText.value = data.translatedText || "";
-    statusEl.textContent = "Translation complete";
-
+    if (data.responseData && data.responseData.translatedText) {
+      resultText.value = data.responseData.translatedText;
+      statusEl.textContent = "Translation complete";
+    } else {
+      statusEl.textContent = "Translation failed";
+      resultText.value = "";
+    }
   } catch (err) {
-    console.error("Network or parsing error:", err);
-    statusEl.textContent = "Translation failed. Try again.";
+    console.error("Translation error:", err);
+    statusEl.textContent = "Network error";
   } finally {
     loader.style.display = "none";
     translateBtn.disabled = false;
@@ -137,7 +132,7 @@ swapBtn.addEventListener("click", () => {
   resultText.value = tempText;
 });
 
-/* ---------------------------
+/* --------------------------
         ENTER SHORTCUT
 ----------------------------*/
 
