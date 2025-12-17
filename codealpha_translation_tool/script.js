@@ -45,48 +45,29 @@ async function translateText() {
   let fromLang = sourceLang.value;
   let toLang = targetLang.value;
 
-  if (fromLang === "zh") fromLang = "zh-CN";
-  if (toLang === "zh") toLang = "zh-CN";
-
   try {
-    const response = await fetch("https://libretranslate.de/translate", {
+    const response = await fetch("https://translate.astian.org/translate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // some instances want this header, harmless if not needed
         "Accept": "application/json"
       },
       body: JSON.stringify({
         q: text,
-        source: fromLang || "auto",
+        source: fromLang,
         target: toLang,
         format: "text"
       })
     });
 
-    if (!response.ok) {
-      console.error("API error status:", response.status);
-      statusEl.textContent = "Translation failed. Try again.";
-      resultText.value = "";
-      return;
-    }
-
     const data = await response.json();
 
-    if (data && (data.translatedText || data.translation)) {
-      const translated =
-        data.translatedText || data.translation || data.translated || "";
-      resultText.value = translated;
-      statusEl.textContent = "Translation complete";
-    } else {
-      console.error("Unexpected API response:", data);
-      statusEl.textContent = "Translation failed. Unexpected response.";
-      resultText.value = "";
-    }
+    resultText.value = data.translatedText || "";
+    statusEl.textContent = "Translation complete";
+
   } catch (err) {
     console.error("Network or parsing error:", err);
-    statusEl.textContent = "Network error. Please try again.";
-    resultText.value = "";
+    statusEl.textContent = "Translation failed. Try again.";
   } finally {
     loader.style.display = "none";
     translateBtn.disabled = false;
@@ -147,9 +128,6 @@ speakBtn.addEventListener("click", () => {
 ----------------------------*/
 
 swapBtn.addEventListener("click", () => {
-  swapBtn.style.transform = "rotate(180deg)";
-  setTimeout(() => (swapBtn.style.transform = "rotate(0deg)"), 300);
-
   const tempLang = sourceLang.value;
   sourceLang.value = targetLang.value;
   targetLang.value = tempLang;
