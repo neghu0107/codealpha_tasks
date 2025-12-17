@@ -9,28 +9,27 @@
 
 <body>
 
-  <!-- ✅ NAVBAR -->
+  <!-- NAVBAR -->
   <div class="navbar">
-    🌙 Language Translator
+    <span>Language Translator</span>
     <button id="themeToggle" class="theme-btn">🌙</button>
   </div>
 
-  <!-- ✅ MAIN APP -->
+  <!-- MAIN APP -->
   <div class="app-container">
     <h1>Language Translation Tool</h1>
 
-    <!-- ✅ DESCRIPTION -->
     <p class="subtitle">
       Instantly translate text between multiple languages with a clean, modern interface.
     </p>
 
-    <!-- ✅ INPUT TEXT -->
+    <!-- INPUT TEXT -->
     <div class="panel">
       <label for="source-text">Enter text</label>
       <textarea id="source-text" rows="5" placeholder="Type text here..."></textarea>
     </div>
 
-    <!-- ✅ LANGUAGE SELECTORS + SWAP BUTTON -->
+    <!-- LANGUAGE SELECTORS + SWAP BUTTON -->
     <div class="panel languages">
       <div>
         <label for="source-lang">From</label>
@@ -90,13 +89,13 @@
       </div>
     </div>
 
-    <!-- ✅ TRANSLATE BUTTON -->
+    <!-- TRANSLATE BUTTON -->
     <button id="translate-btn" class="primary-btn">Translate</button>
 
-    <!-- ✅ LOADING SPINNER -->
-    <div id="loader" class="spinner"></div>
+    <!-- LOADING SPINNER -->
+    <div id="loader" class="spinner" style="display: none;"></div>
 
-    <!-- ✅ OUTPUT TEXT -->
+    <!-- OUTPUT TEXT -->
     <div class="panel">
       <label for="result-text">Translated text</label>
       <textarea id="result-text" rows="5" readonly></textarea>
@@ -109,11 +108,11 @@
       </div>
     </div>
 
-    <!-- ✅ STATUS TEXT -->
+    <!-- STATUS TEXT -->
     <p id="status"></p>
   </div>
 
-  <!-- ✅ FOOTER -->
+  <!-- FOOTER -->
   <div class="footer">Made by Neha</div>
 
   <script src="script.js"></script>
