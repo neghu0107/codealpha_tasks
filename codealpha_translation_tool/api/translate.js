@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     });
 
   } catch (err) {
-    console.error(err);
+    console.error("Translation error:", err);
     return res.status(500).json({ error: "Translation failed" });
   }
 }
