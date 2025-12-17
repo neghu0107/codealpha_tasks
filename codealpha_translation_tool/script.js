@@ -47,7 +47,7 @@ async function translateText() {
 
   const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(
     text
-  )}&langpair=${fromLang}|${toLang}`;
+  )}&langpair=${fromLang}|${toLang}&de=test@example.com`;
 
   try {
     const response = await fetch(url);
@@ -132,7 +132,7 @@ swapBtn.addEventListener("click", () => {
   resultText.value = tempText;
 });
 
-/* ----------------------------
+/* ---------------------------
         ENTER SHORTCUT
 ----------------------------*/
 
@@ -141,5 +141,6 @@ sourceText.addEventListener("keydown", (e) => {
     translateText();
   }
 });
+
 
 translateBtn.addEventListener("click", translateText);
