@@ -49,28 +49,44 @@ async function translateText() {
   if (toLang === "zh") toLang = "zh-CN";
 
   try {
-    const response = await fetch("/api/translate", {
+    const response = await fetch("https://libretranslate.de/translate", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        // some instances want this header, harmless if not needed
+        "Accept": "application/json"
+      },
       body: JSON.stringify({
-        text,
-        source: fromLang,
-        target: toLang
+        q: text,
+        source: fromLang || "auto",
+        target: toLang,
+        format: "text"
       })
     });
 
+    if (!response.ok) {
+      console.error("API error status:", response.status);
+      statusEl.textContent = "Translation failed. Try again.";
+      resultText.value = "";
+      return;
+    }
+
     const data = await response.json();
 
-    if (data.translatedText) {
-      resultText.value = data.translatedText;
+    if (data && (data.translatedText || data.translation)) {
+      const translated =
+        data.translatedText || data.translation || data.translated || "";
+      resultText.value = translated;
       statusEl.textContent = "Translation complete";
     } else {
+      console.error("Unexpected API response:", data);
+      statusEl.textContent = "Translation failed. Unexpected response.";
       resultText.value = "";
-      statusEl.textContent = "Translation failed";
     }
   } catch (err) {
-    console.error(err);
-    statusEl.textContent = "Network error";
+    console.error("Network or parsing error:", err);
+    statusEl.textContent = "Network error. Please try again.";
+    resultText.value = "";
   } finally {
     loader.style.display = "none";
     translateBtn.disabled = false;
